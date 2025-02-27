@@ -12,8 +12,8 @@ This setup script partitions a disk, formats the partitions, configures swap spa
 - Updates `/etc/fstab` to persist mounts across reboots.
 - Ensures each step is performed only if necessary, avoiding reformatting or remounting existing configurations.
 
-## Prerequisites
-- A Linux system (Tested on AWS EC2 instances with Amazon Linux 2)
+## Prerequisites    
+- A Linux system (Tested on AWS EC2 instances with RHEL 9)
 - A user with sudo priviliges
 - A secondary disk (`/dev/xvdb`) with at least 15GB available
 
