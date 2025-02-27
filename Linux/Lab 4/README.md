@@ -14,7 +14,8 @@ This setup script partitions a disk, formats the partitions, configures swap spa
 
 ## Prerequisites
 - A Linux system (Tested on AWS EC2 instances with Amazon Linux 2)
-- A secondary disk (`/dev/xvdb`) with at least four partitions available
+- A user with sudo priviliges
+- A secondary disk (`/dev/xvdb`) with at least 15GB available
 
 ## Script Usage
 1. **Make the script executable:**
