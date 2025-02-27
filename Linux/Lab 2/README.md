@@ -4,19 +4,27 @@
 This setup script installs MySQL, configures user permissions, and sets up a cron job to take automatic backups of all databases every Sunday at 5 AM.
 
 ## What This Script Does
-✅ Installs MySQL
-✅ Starts MySQL and enables it on boot
-✅ Adds `student` to the MySQL group
-✅ Creates `/home/student/mysql_backups` with proper ownership
-✅ Adds a sudo rule so `student` can run `mysqldump` without a password
-✅ Adds a cron job under `root`, but `mysqldump` runs as `student`
+- Installs MySQL
+- Starts MySQL and enables it on boot
+- Adds `student` to the MySQL group
+- Creates `/home/student/mysql_backups` with proper ownership
+- Adds a sudo rule so `student` can run `mysqldump` without a password
+- Adds a cron job under `root`, but `mysqldump` runs as `student`
 
-## Usage
-Run the following command to execute the setup script:
+## Prerequisites
+- A Linux system (Tested on RHEL 9.3)
+- A student user with sudo privileges
 
-```bash
-sudo ./setup-mysql-backup.sh
-```
+## Script Usage
+1. **Make the script executable:**
+   ```bash
+   chmod +x ./setup-mysql-backup-cron.sh
+   ```
+
+2. **Run the script as a superuser:**
+   ```bash
+    sudo ./setup-mysql-backup-cron.sh
+   ```
 
 ## Verification
 After running the script, confirm the backup by checking the `/home/student/mysql_backups/` directory:
