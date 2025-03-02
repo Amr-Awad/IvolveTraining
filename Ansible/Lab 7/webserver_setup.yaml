@@ -1,0 +1,54 @@
+---
+- name: Generate and Distribute Custom SSH Key
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate a custom SSH key if not exists
+      command: ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/ansible_key
+      args:
+        creates: ~/.ssh/ansible_key
+
+- name: Copy SSH Key to Worker Nodes
+  hosts: webservers
+  tasks:
+    - name: Copy SSH key using ssh-copy-id
+      shell: ssh-copy-id -i ~/.ssh/ansible_key.pub {{ ansible_user }}@{{ ansible_host }}
+      delegate_to: localhost
+
+
+- name: Configure Web Server (Nginx, HTML Page, Firewall)
+  hosts: webservers
+  become: yes
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/ansible_key
+  tasks:
+    - name: Install Nginx
+      dnf:
+        name: nginx
+        state: present
+
+    - name: Start and Enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create a custom HTML page
+      copy:
+        dest: /usr/share/nginx/html/index.html
+        content: |
+          <html>
+          <head><title>Welcome to Ansible Managed Web Server</title></head>
+          <body><h1>Hello from Ansible!</h1></body>
+          </html>
+
+    - name: Open firewall for SSH and HTTP
+      firewalld:
+        service: "{{ item }}"
+        state: enabled
+        permanent: yes
+        immediate: yes
+      loop:
+        - ssh
+        - http
+        - https
